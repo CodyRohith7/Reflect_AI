@@ -1,67 +1,107 @@
 <div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ee/National_Highways_Authority_of_India_logo.svg/1200px-National_Highways_Authority_of_India_logo.svg.png" width="100" alt="NHAI Logo">
-  <h1>ReflectAI (v5.0 Enterprise)</h1>
-  <p><b>Autonomous Retroreflectivity Intelligence Platform</b></p>
-  <p><i>Winning Submission for the 6th NHAI Innovation Hackathon (2026)</i></p>
+  <img src="assets/banner.png" alt="ReflectAI — Autonomous Retroreflectivity Intelligence Platform" width="100%">
+  <br><br>
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  [![Status](https://img.shields.io/badge/Status-Prototype_Active-success)]()
-  [![Make in India](https://img.shields.io/badge/Made_In-India-orange)]()
+  ![Status](https://img.shields.io/badge/Status-Prototype%20Active-brightgreen?style=flat-square)
+  ![Hackathon](https://img.shields.io/badge/NHAI-6th%20Innovation%20Hackathon%202026-blue?style=flat-square)
+  ![IRC](https://img.shields.io/badge/Standards-IRC%3A35%20%7C%20IRC%3A67-orange?style=flat-square)
+  ![Made In India](https://img.shields.io/badge/Made%20In-India%20%F0%9F%87%AE%F0%9F%87%B3-ff6600?style=flat-square)
 </div>
 
 ---
 
-## 🎯 The Problem
-The National Highways Authority of India (NHAI) manages over 50,000 km of highways. Ensuring the retroreflectivity of road signs, pavement markings, and studs (per **IRC:35** and **IRC:67**) is currently done via manual, handheld devices. This is:
-- **Dangerous** for field workers on live expressways.
-- **Slow** (2-3 km/h).
-- **Expensive**, requiring lane closures and traffic management.
-- **Reactive** rather than predictive.
+## The Problem
 
-## 🚀 The ReflectAI Solution
-ReflectAI is a **Type iii** combination solution. By retrofitting existing NHAI patrol vehicles with a COTS (Commercial Off-The-Shelf) multi-modal sensor pod, we capture highway data at 80+ km/h. 
+NHAI manages over **50,000 km** of national highways. Retroreflectivity compliance for road signs, pavement markings, and road studs is mandated under **IRC:35** and **IRC:67** — but today, it is measured entirely using handheld devices operated by workers standing on live, high-speed expressways.
 
-Our proprietary **ReflectNet Edge-AI** model uses physics-informed deep learning and polarimetric imaging to instantly estimate the Coefficient of Retroreflection ($R_L$) without the need for expensive laser systems.
-
-### Core Features (v5.0)
-- 🏎️ **High-Speed Telemetry:** Operates safely at 80-100 km/h with zero traffic disruption.
-- 🧠 **Physics-Informed AI:** YOLOv8 asset segmentation + multi-task CNN for RL regression (±12% accuracy).
-- ⛅ **WeatherNet Adaptation:** Works in Day, Night, Wet, and Foggy conditions using synthetic data domain adaptation.
-- 🔮 **Predictive Degradation (LSTM):** Forecasts exactly when an asset will fall below IRC minimums (90-day ETA).
-- 🚁 **Drone Ops Integration:** Ready for gantry sign inspection via UAVs.
-- 💻 **SaaS Command Center:** Premium dark-mode glassmorphism dashboard for NHAI administrators.
+This is slow (2–3 km/h), dangerous, expensive (requires lane closures), and reactive. There is no predictive capability and no network-wide visibility.
 
 ---
 
-## 📸 Dashboard Preview
+## The Solution
 
-The ReflectAI Command Center provides 5 core modules:
-1. **Live Scan:** Real-time dual-feed (RGB + Depth) telemetry with live AI bounding boxes.
-2. **Network Map:** GIS heatmap of highway compliance.
-3. **Predictive Analytics:** LSTM forecasting charts to schedule maintenance before failure.
-4. **Drone Ops:** Gimbal camera feed integration for overhead assets.
-5. **IRC Reports:** Automated warranty compliance generation.
+**ReflectAI** is a vehicle-mounted, AI-powered retroreflectivity measurement platform. By retrofitting existing NHAI highway patrol vehicles with an affordable multi-modal sensor pod, it continuously captures highway data at **80+ km/h** — with zero traffic disruption.
 
-*(See the `assets/` folder for Architecture Diagrams and Mobile UI mockups).*
+Our edge AI model, **ReflectNet**, uses physics-informed deep learning and polarimetric imaging to estimate the Coefficient of Retroreflection (R_L) across all asset types simultaneously: signs, pavement markings, road studs, and delineators.
 
 ---
 
-## 🛠️ Tech Stack
-- **Frontend Command Center:** HTML5, CSS3 (Glassmorphism UI), Vanilla JavaScript, Chart.js, Lucide Icons.
-- **Sensing (Hardware concept):** Dual Stereo RGB, NIR Camera, Point Cloud/LiDAR, OBD-II, RTK GPS.
-- **AI/ML (Concept):** Python, PyTorch (YOLOv8 + EfficientNet-B4 + LSTM), NVIDIA Jetson Edge Inference.
+## Features
+
+| Feature | Detail |
+|---|---|
+| **High-Speed Survey** | Operates at 80–100 km/h; 100% continuous coverage |
+| **Multi-Asset Detection** | Signs, markings, studs, delineators — all in one pass |
+| **Physics-Informed AI** | YOLOv8 segmentation + EfficientNet-B4 RL regression (±12% accuracy) |
+| **All-Weather Operation** | Day, Night, Wet, Foggy via WeatherNet domain adaptation |
+| **Predictive Maintenance** | LSTM model forecasts asset failure up to 90 days in advance |
+| **Drone Integration** | Gantry sign inspection via UAV without lane closures |
+| **SaaS Command Center** | GIS heatmap, real-time alerts, automated IRC compliance reports |
 
 ---
 
-## 🏃‍♂️ How to Run the Web Dashboard
-No build steps or npm packages required. 
-1. Clone this repository or download the ZIP.
-2. Open the `demo/index.html` file in any modern web browser (Chrome/Edge/Firefox).
-3. Click **"Start Scan"** on the dashboard to view the simulated highway edge-compute AI feed!
+## System Architecture
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  SENSING LAYER          AI LAYER              MANAGEMENT     │
+│  (Vehicle / Drone)      (Edge + Cloud)        (SaaS)         │
+│                                                              │
+│  Stereo RGB Cameras ──► ReflectNet CNN ──► GIS Dashboard     │
+│  NIR Camera         ──► YOLOv8 Detect  ──► Mobile App        │
+│  Polarimetric Array ──► WeatherNet     ──► Alert System      │
+│  GPS/IMU + OBD-II   ──► DegradeLSTM   ──► Maintenance Sched │
+│  UAV Pod (Drone)    ──► Edge Inference ──► IRC PDF Reports   │
+└──────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 👤 Author
-- **Rohith**
-- Team Size: 1
-- Hackathon Track: High-quality retro-reflectivity measurement solutions.
+## Dashboard Modules
+
+1. **Live Scan** — Real-time dual-feed (RGB + Depth) with AI bounding boxes and live telemetry.
+2. **Network Map** — GIS heatmap showing compliance status across all NHAI corridors.
+3. **Predictive Analytics** — LSTM degradation forecasting with maintenance priority queue.
+4. **Drone Ops** — Gimbal camera feed management for overhead gantry inspection.
+5. **IRC Reports** — One-click automated compliance report generation.
+
+---
+
+## Tech Stack
+
+**Frontend:** HTML5, CSS3 (Glassmorphism), Vanilla JS, Chart.js, Lucide Icons  
+**AI/ML (Concept):** Python, PyTorch — YOLOv8 + EfficientNet-B4 + LSTM on NVIDIA Jetson Orin  
+**Sensing (Hardware):** Stereo RGB, NIR, Polarimetric Camera, RTK GPS/IMU, OBD-II
+
+---
+
+## Running Locally
+
+No build tools or package managers needed.
+
+```bash
+git clone https://github.com/CodyRohith7/Reflect_AI.git
+cd Reflect_AI
+# Open demo/index.html in Chrome/Edge/Firefox
+```
+
+Click **Start Scan** on the dashboard to launch the simulated highway AI detection feed.
+
+---
+
+## Evaluation Alignment (NHAI Hackathon)
+
+| Criterion | Approach |
+|---|---|
+| **Innovation (30%)** | First system using polarimetric imaging + AI for non-contact, multi-asset RL estimation |
+| **Feasibility (30%)** | COTS hardware kit (~₹2–3L), retrofits onto existing patrol vehicles in 2 hours |
+| **Scalability (20%)** | Cloud-native SaaS; deployable across 50,000+ km network with no hardware changes |
+| **Presentation (20%)** | Fully functional interactive prototype with live simulation |
+
+---
+
+## Author
+
+**Rohith** — Solo Submission  
+6th NHAI Innovation Hackathon, April 2026  
+Problem Statement: High-quality retro-reflectivity measurement solutions for road markings and signboards
