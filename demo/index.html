@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReflectAI v5.0 Enterprise | NHAI Command Center</title>
+    <meta name="description" content="Autonomous Retroreflectivity Intelligence Platform for NHAI">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<!-- Ambient Background -->
+<div class="ambient-bg">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+</div>
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar">
+    <div class="brand">
+        <div class="logo">
+            <i data-lucide="scan-eye" class="logo-icon"></i>
+        </div>
+        <div class="brand-text">
+            <h1>ReflectAI <span class="badge">v5.0</span></h1>
+            <p>NHAI Command Center</p>
+        </div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="#" class="nav-item active" data-target="live-scan">
+            <i data-lucide="radio"></i> Live Scan
+        </a>
+        <a href="#" class="nav-item" data-target="network">
+            <i data-lucide="map"></i> Network Map
+        </a>
+        <a href="#" class="nav-item" data-target="predictive">
+            <i data-lucide="trending-up"></i> Predictive Analytics
+        </a>
+        <a href="#" class="nav-item" data-target="drone">
+            <i data-lucide="plane"></i> Drone Ops
+        </a>
+        <a href="#" class="nav-item" data-target="reports">
+            <i data-lucide="file-text"></i> IRC Reports
+        </a>
+    </div>
+
+    <div class="system-status">
+        <div class="status-indicator online"></div>
+        <span>Edge-AI Node Active</span>
+        <div class="ping">12ms ping</div>
+    </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="content-area">
+    
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Search asset ID, highway chainage, or alert...">
+        </div>
+        <div class="top-actions">
+            <button class="btn-icon" title="Notifications"><i data-lucide="bell"></i><span class="notif-dot"></span></button>
+            <button class="btn-icon" title="Settings"><i data-lucide="settings"></i></button>
+            <div class="user-profile">
+                <img src="https://ui-avatars.com/api/?name=NHAI+Admin&background=00d4ff&color=fff" alt="User">
+                <span>NHAI Admin</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- VIEWS -->
+
+    <!-- 1. Live Scan View (Active by default) -->
+    <section id="live-scan" class="view-section active-view">
+        <div class="view-header">
+            <div>
+                <h2>Live Telemetry & Scan</h2>
+                <p>Vehicle-mounted Multi-Modal Sensor Fusion (Camera + LiDAR + Polarization)</p>
+            </div>
+            <div class="controls">
+                <button class="btn-outline" onclick="toggleWeather()"><i data-lucide="cloud-rain"></i> Toggle Weather</button>
+                <button class="btn-primary" id="btn-scan" onclick="toggleScan()"><i data-lucide="play"></i> <span>Start Scan</span></button>
+            </div>
+        </div>
+
+        <div class="scan-grid">
+            <!-- Camera Feed -->
+            <div class="card glass video-card">
+                <div class="card-header">
+                    <span><i data-lucide="camera"></i> Primary Optical Feed (RGB + AI Seg)</span>
+                    <span class="badge live">LIVE</span>
+                </div>
+                <div class="video-container">
+                    <canvas id="camera-feed" width="800" height="450"></canvas>
+                    <div class="hud-overlay">
+                        <div class="hud-top">
+                            <span>REC <span class="rec-dot"></span></span>
+                            <span id="hud-time">00:00:00</span>
+                        </div>
+                        <div class="crosshair"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary Feed (Depth / LiDAR) -->
+            <div class="card glass secondary-feed">
+                <div class="card-header">
+                    <span><i data-lucide="layers"></i> Depth Map & Polarization</span>
+                    <div class="feed-tabs">
+                        <span class="tab active">Depth</span>
+                        <span class="tab">NIR</span>
+                    </div>
+                </div>
+                <div class="video-container small">
+                    <canvas id="depth-feed" width="400" height="225"></canvas>
+                </div>
+                <div class="telemetry-data mt-4">
+                    <div class="t-row"><span>Speed (OBD-II):</span> <span class="t-val highlight" id="t-speed">0 km/h</span></div>
+                    <div class="t-row"><span>Pitch/Roll:</span> <span class="t-val" id="t-gyro">+2.1° / -0.4°</span></div>
+                    <div class="t-row"><span>GPS Acc:</span> <span class="t-val" id="t-gps">± 1.2m (RTK Fix)</span></div>
+                    <div class="t-row"><span>Illuminance:</span> <span class="t-val" id="t-lux">84,000 lux</span></div>
+                </div>
+            </div>
+
+            <!-- Real-time Asset Log -->
+            <div class="card glass asset-log">
+                <div class="card-header">
+                    <span><i data-lucide="list"></i> AI Asset Detections</span>
+                    <span class="badge">Last 50</span>
+                </div>
+                <div class="log-container" id="detection-log">
+                    <!-- JS populated -->
+                </div>
+            </div>
+
+            <!-- Current Scan Metrics -->
+            <div class="card glass metrics-card">
+                <div class="card-header">
+                    <span><i data-lucide="bar-chart-2"></i> Current Session Metrics</span>
+                </div>
+                <div class="metrics-grid">
+                    <div class="m-item">
+                        <div class="m-label">Distance Scanned</div>
+                        <div class="m-val" id="m-dist">0.0 km</div>
+                    </div>
+                    <div class="m-item">
+                        <div class="m-label">Assets Evaluated</div>
+                        <div class="m-val" id="m-assets">0</div>
+                    </div>
+                    <div class="m-item">
+                        <div class="m-label">Network Health</div>
+                        <div class="m-val text-green" id="m-health">100%</div>
+                    </div>
+                    <div class="m-item">
+                        <div class="m-label">Critical Alerts</div>
+                        <div class="m-val text-red" id="m-crit">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Network Map View -->
+    <section id="network" class="view-section">
+        <div class="view-header">
+            <div>
+                <h2>GIS Network Heatmap</h2>
+                <p>Comprehensive overview of retroreflectivity compliance across NHAI corridors.</p>
+            </div>
+            <div class="filter-group">
+                <select class="custom-select"><option>All Corridors</option><option>NH-48</option><option>NH-44</option></select>
+                <select class="custom-select"><option>All Asset Types</option><option>Signs</option><option>Markings</option></select>
+            </div>
+        </div>
+        <div class="card glass map-card">
+            <div class="map-wrapper">
+                <canvas id="network-map" width="1200" height="600"></canvas>
+                <div class="map-overlay-panel">
+                    <h3>Corridor Health: NH-48</h3>
+                    <div class="progress-bar"><div class="fill" style="width: 82%"></div></div>
+                    <p class="text-sm">82% Compliant | 12% Warning | 6% Critical</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Predictive Analytics View -->
+    <section id="predictive" class="view-section">
+        <div class="view-header">
+            <div>
+                <h2>Predictive Degradation Analytics</h2>
+                <p>LSTM-powered forecasting for proactive maintenance scheduling.</p>
+            </div>
+        </div>
+        <div class="analytics-grid">
+            <div class="card glass chart-large">
+                <div class="card-header"><span>Degradation Forecast (Next 90 Days)</span></div>
+                <div class="chart-container"><canvas id="predictive-chart"></canvas></div>
+            </div>
+            <div class="card glass list-card">
+                <div class="card-header"><span>High-Risk Assets (Predicted Failure)</span></div>
+                <table class="data-table">
+                    <thead><tr><th>ID</th><th>Type</th><th>Failure ETA</th><th>Action</th></tr></thead>
+                    <tbody id="risk-table"></tbody>
+                </table>
+            </div>
+            <div class="card glass chart-small">
+                <div class="card-header"><span>Failure by Asset Type</span></div>
+                <div class="chart-container"><canvas id="doughnut-chart"></canvas></div>
+            </div>
+            <div class="card glass chart-small">
+                <div class="card-header"><span>Environmental Impact Factor</span></div>
+                <div class="chart-container"><canvas id="radar-chart"></canvas></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Drone Ops View -->
+    <section id="drone" class="view-section">
+        <div class="view-header">
+            <div>
+                <h2>UAV/Drone Operations</h2>
+                <p>Overhead gantry sign inspection using autonomous drone pods.</p>
+            </div>
+            <button class="btn-primary" onclick="alert('Initiating Drone Takeoff Sequence...')"><i data-lucide="plane-takeoff"></i> Launch Drone</button>
+        </div>
+        <div class="drone-grid">
+            <div class="card glass video-card">
+                <div class="card-header"><span><i data-lucide="video"></i> Gimbal Camera Feed (Gantry Focus)</span></div>
+                <div class="video-container" style="background: #000; display:flex; align-items:center; justify-content:center;">
+                    <p class="text-secondary text-sm">Drone is currently docked.</p>
+                </div>
+            </div>
+            <div class="card glass drone-stats">
+                <div class="card-header"><span><i data-lucide="battery"></i> Drone Telemetry</span></div>
+                <div class="t-row"><span>Battery:</span> <span class="t-val text-green">98%</span></div>
+                <div class="t-row"><span>Altitude:</span> <span class="t-val">0.0 m</span></div>
+                <div class="t-row"><span>Wind Speed:</span> <span class="t-val">12 km/h</span></div>
+                <div class="t-row"><span>Status:</span> <span class="t-val highlight">Ready for Dispatch</span></div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
