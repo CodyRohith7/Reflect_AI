@@ -102,6 +102,6 @@ Click **Start Scan** on the dashboard to launch the simulated highway AI detecti
 
 ## Author
 
-**Rohith** — Solo Submission  
+**Rohith**  
 6th NHAI Innovation Hackathon, April 2026  
 Problem Statement: High-quality retro-reflectivity measurement solutions for road markings and signboards
